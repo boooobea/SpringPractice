@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<!-- ============== 1. Hikari Configuration ===============-->
+	<!-- primary="true" 1개 이상의 컨텍시 기본값 하나만 설정하는 속성 -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig" primary="true">
+		<description>HikariCP Configuration</description>
+
+		<!-- 1. JDBC 연결정보 속성들에 값 설정-->
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@db202204131245_high?TNS_ADMIN=C:/opt/OracleCloudWallet/ATP" />
+		<property name="username" value="admin" />
+		<property name="password" value="Oracle12345678" />
+
+		<!-- 2. Connection Pool의 작동방식과 관련된 속성들에 값 설정 -->
+		<property name="maximumPoolSize" value="10" />
+		<property name="minimumIdle" value="2" />
+		<property name="idleTimeout" value="10000" />
+		<property name="connectionTimeout" value="1000" />
+		<property name="connectionTestQuery" value="SELECT 1 FROM dual" />
+		<property name="dataSourceJNDI" value="jdbc/HikariCP" />
+		<property name="poolName" value="*** HikariDataSource ***"></property>
+	</bean>
+
+	<bean id="hikariDataSource"
+		class="com.zaxxer.hikari.HikariDataSource" destroy-method="close" 
+		primary="false" >
+		
+		<description>HikariCP DataSource</description>
+
+		<constructor-arg ref="hikariConfig" />
+		<!-- ref : 생성자의 매개변수로 hikariConfig 빈을 사용 -->
+	</bean>
+
+
+	<!-- ============== 2. Mybatis Pooled Data Source Configuration ===============-->
+
+	<bean 
+		id="pooledDataSource"
+		class="org.apache.ibatis.datasource.pooled.PooledDataSource"
+		destroy-method="forceCloseAll"
+		primary="true">
+
+		<description> Mybatis Pooled Data Source</description>
+
+		<property name="driver" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+
+		<property name="url" value="jdbc:log4jdbc:oracle:thin:@db202204131245_high?TNS_ADMIN=C:/opt/OracleCloudWallet/ATP" />
+		<property name="username" value="admin" />
+		<property name="password" value="Oracle12345678" />
+
+		<property name="poolMaximumActiveConnections" value="5" />
+		<property name="poolMaximumIdleConnections" value="2" />
+		<property name="poolPingEnabled" value="true" />
+		<property name="poolPingQuery" value="SELECT 1 FROM dual" />
+		<property name="loginTimeout" value="1" />
+
+	</bean>
+
+
+
+	<!-- ============== 3. Mybatis Configuration ===============-->
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" > 
+
+		<!-- Data Source 변경하여 테스트 -->
+<!-- 		<property name="dataSource" ref="hikariDataSource" /> -->
+		<property name="dataSource" ref="pooledDataSource" />
+		
+
+		<!-- classpath: = /WEB-INF/classes/ , Resource : String으로 직접 지정 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		
+		<!-- 위의 속성configLacation으로 마이바티스 설정파일의 위치를 등록하였으니, 
+		xml mapper파일의 등록, mapper inteface등록은 설정파일에서 해야한다. 빈즈 프로퍼티로 등록하지 말것  -->
+		<!-- <property name="mapperLocation" value="classpath:mappers/*.xml"/> -->
+	</bean>
+
+	
+	<context:component-scan base-package="org.zerock.myapp.service"/>
+	<mybatis-spring:scan base-package="org.zerock.myapp.mapper"/>
+
+	
+	
+	</beans>
