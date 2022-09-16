@@ -10,7 +10,7 @@
   </insert>
 
   <update id="updateBoard">
-      UPDATE tbl_board
+      UPDATE TEST_BOARD
       SET title = #{title},
           content = #{content},
           writer = #{writer}

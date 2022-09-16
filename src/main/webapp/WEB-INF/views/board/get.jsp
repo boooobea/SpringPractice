@@ -75,7 +75,7 @@
                     form.submit();
                 })
                 $('#modify_btn').on("click",function(e){
-                    form.attr("action","/baord/modify");
+                    form.attr("action","/board/modify");
                     form.submit();
                 })
             });

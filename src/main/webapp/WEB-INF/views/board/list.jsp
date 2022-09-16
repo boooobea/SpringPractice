@@ -70,7 +70,7 @@
             let pervStepResult = "${BOARD_RESULT}";
             if(pervStepResult != null && pervStepResult.length>0){
                 alert(pervStepResult);
-            }//게시글 등록 결과 
+            }//게시글 알림 
 
             $('#regBtn').on('click',()=>{
                 self.location="/board/register";

@@ -1,108 +1,154 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>board/modify.jsp</title>
-    <style>
-        *{
-            margin: 0 auto;
-            padding: 0px;
-        }
-        #wrapper{
-            width: 1024px;
-            font-family: 'D2Coding';
-            font-size: 14px;
-            margin-top: 30px;
-        }
-        #submitBtn,#removeBtn, #listBtn{
-            width: 80px;
-            height: 40px;
-            border: none;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 3px 3px 10px darkgray;
-        }
-        #submitBtn{
-            color: white;
-            background-color: green;
-        }
-        #listBtn{
-            color: white;
-            background-color: blue;
-        }
-        #removeBtn{
-            color: white;
-            background-color: red;
-        }
-        button:hover{
-            cursor: pointer;
-        }
-    </style>
-       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js" integrity="sha512-QDsjSX1mStBIAnNXx31dyvw4wVdHjonOwrkaIhpiIlzqGUCdsI62MwQtHpJF+Npy2SmSlGSROoNWQCOFpqbsOg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-       <script>
-           $(function(){
-                //삭제버튼 클릭시 post 요청 처리/board/remove?bno=xxx 
-                $('#removeBtn').on('click',()=>{
-                    let formObj = $('form');
-                    // formObj.attr(속성이름, 속성값);
-                    // formObj.submit()=>요청 전송
-                    formObj.attr('action','/board/remove?bno=${BOARD.bno}&currPage=${param.currPage}&keyword=${param.keyword}&type=${param.type}');
-                    formObj.attr('method','POST');
-                    formObj.submit();
-                })//onClick
-                // self : window 객체 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+    <!DOCTYPE html>
+    <html lang="ko">
 
-                $('#listBtn').on('click',()=>{
-                    self.location="/board/list?currPage=${param.currPage}&keyword=${param.keyword}&type=${param.type}";
-                })//onClick
-           });//jq
-       </script>
-</head>
-<body>
-    
-    <h1>WEB-INF/view/board/modify.jsp</h1>
-    <hr>
-  
-    <div id="wrapper">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>board/modify.jsp</title>
+        <style>
+            * {
+                margin: 0 auto;
+                padding: 0px;
+            }
+            #wrapper{
+                width: 800px;
+                margin: 20px 100px;
+                padding-left: 20px;
+            }
+            h1{
+                 margin: 20px;
+            }
+            .input_wrap{
+                padding: 5px 20px;
+            }
+            label{
+                display: block;
+                margin: 10px 0;
+                font-size: 17px;	
+            }
+            input{
+                padding: 5px;
+                font-size: 17px;
+            }
+            textarea{
+                width: 600px;
+                height: 150px;
+                font-size: 15px;
+                padding: 10px;
+            }
+            .btn{
+                display: inline-block;
+                font-size: 22px;
+                padding: 6px 12px;
+                background-color:  rgb(239, 204, 139);
+                border: solid orange 3px;
+                font-weight: 600;
+                width: 140px;
+                height: 41px;
+                line-height: 39px;
+                text-align : center;
+                margin-left : 30px;
+                cursor : pointer;
+            }
+            .btn_wrap{
+                padding-left : 80px;
+                margin-top : 50px;
+            }
 
-        <form action="/board/modify?currPage=${param.currPage}&keyword=${param.keyword}&type=${param.type}" method="post">
-            <table>
-                <tbody>
-                    <tr><!-- bno -->
-                        <td><label for="bno">글번호</label></td>
-                        <td><input type="text" name="bno" id="bno" readonly size="10"  value="${BOARD.bno}" readonly> </td>
-                    </tr>
-                    <tr><!-- title -->
-                        <td><label for="title">제목</label></td>
-                        <td><input type="text" name="title" id="title" size="50" value="${BOARD.title}"> </td>
-                    </tr>
-                    <tr><!-- content -->
-                        <td><label for="content">내용</label></td>
-                        <td><textarea name="content" id="content" cols="52" rows="10">${BOARD.content}</textarea></td>
-                    </tr>
-                    <tr><!-- title -->
-                        <td><label for="writer">작성자</label></td>
-                        <td><input type="text" name="writer" id="writer" readonly size="15" value="${BOARD.writer}"> </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"> &nbsp;</td>
-                    </tr>
-                    <tr> <!-- button 3 -->
-                        <td colspan="2">
-                            <button type="submit" id="submitBtn">SUBMIT</button>
-                            <button type="button" id="removeBtn">REMOVE</button>
-                            <button type="button" id="listBtn">LIST</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-</body>
-</html>
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"
+            integrity="sha512-QDsjSX1mStBIAnNXx31dyvw4wVdHjonOwrkaIhpiIlzqGUCdsI62MwQtHpJF+Npy2SmSlGSROoNWQCOFpqbsOg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <!-- reply js -->
+        <script src="/resources/js/reply.js"></script>
+
+        <script>
+            $(function(){
+
+                let form = $('#boardForm');
+                let modifyForm = $('#modifyForm');
+
+                $('#list_btn').on('click', function(e){
+                    form.attr("action","/board/list");
+                    form.submit();
+                });//리스트로 이동 
+
+                $('#modify_btn').on("click",function(e){
+                    modifyForm.submit();
+                });//수정하기 
+
+                $('#cancle_btn').on('click',function(e){
+                    form.attr("action","/board/get");
+                    form.submit();
+                });//취소하기
+            });
+        </script>
+    </head>
+
+    <body>
+
+        <h1>TEST_BOARD / 게시글 조회</h1>
+        <hr>
+
+        <div id="wrapper">
+
+            <form action="/board/modify" method="post" id="modifyForm">
+
+            <div class="input_warp">
+                <label>게시글 번호</label>
+                <input name="bno" readonly value="${BOARD.bno}">
+            </div>
+
+            <div class="input_warp">
+                <label>게시글 제목</label>
+                <input name="title" value="${BOARD.title}">
+            </div>
+
+            <div class="input_warp">
+                <label>게시글 내용</label>
+                <textarea name="content" value="${BOARD.content}">${BOARD.content}</textarea>
+            </div>
+
+            <div class="input_warp">
+                <label>게시글 작성자</label>
+                <input name="writer" readonly value="${BOARD.writer}">
+            </div>
+
+            <div class="input_warp">
+                <label>게시글 등록일</label>
+                <input name="insertTs" readonly value='<fmt:formatDate pattern="yyyy/MM/dd HH:mm" value="${BOARD.insertTs}"/>'>
+            </div>
+
+            <div class="input_warp">
+                <label>게시글 수정일</label>
+                <input name="updateTs" readonly value='<fmt:formatDate pattern="yyyy/MM/dd HH:mm" value="${BOARD.updateTs}"/>'>
+            </div>
+
+            <div class="btn_wrap">
+                <a class="btn" id="list_btn">목록페이지</a>
+                <a class="btn" id="modify_btn">수정 하기</a>
+                <a class="btn" id="cancle_btn">취 소</a>
+            </div>
+                
+            </form>
+            
+            <form id="boardForm" action="/board/modify" method="get">
+                <input type="hidden" id="bno" name="bno" value="${BOARD.bno}">
+            </form>
+
+            <!-- <div class="content_botton">
+                <div class="reply_subject">
+                    <h2>댓글</h2>
+                </div>
+                <div class="reply_button_wrap">
+                    <button>댓글쓰기</button>
+                </div>
+            </div> -->
+        </div>
+    </body>
+
+    </html>
