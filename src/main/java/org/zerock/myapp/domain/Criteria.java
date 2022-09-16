@@ -7,7 +7,7 @@ import lombok.Data;
 public class Criteria {
 
 	private int currPage = 1;		//현재 페이지 번호
-	private int amount = 20;		//각 페이지에서 보여줄 게시물의 개수 
+	private int amount = 10;		//각 페이지에서 보여줄 게시물의 개수 
 	
 	
 	private int pagesPerPage =5; 	//pagination의 길이 

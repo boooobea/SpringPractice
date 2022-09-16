@@ -73,6 +73,7 @@
                 let modifyForm = $('#modifyForm');
 
                 $('#list_btn').on('click', function(e){
+                    form.find("#bno").remove();
                     form.attr("action","/board/list");
                     form.submit();
                 });//리스트로 이동 
@@ -145,6 +146,8 @@
             
             <form id="boardForm" action="/board/modify" method="get">
                 <input type="hidden" id="bno" name="bno" value="${BOARD.bno}">
+                <input type="hidden" name="currPage" value="${cri.currPage}">
+                <input type="hidden" name="amount" value="${cri.amount}">
             </form>
 
             <!-- <div class="content_botton">

@@ -91,5 +91,26 @@ public class BoardServiceTests {
 		log.info("\t + result : {}", result);
 	}//removeBoard
 
+	@Test
+	@DisplayName("PageList")
+	void testPageList() throws ServiceException {
+		Criteria cri = new Criteria();
+		cri.setAmount(3);
+		cri.setCurrPage(2);
+		cri.setPagesPerPage(3);
+		List<BoardVO> list = this.boardService.PageList(cri);
+		list.forEach(log::info);
+	}//PageList
+	
+	@Test
+	@DisplayName("PageCount")
+	void testPageCount() throws ServiceException {
+		Criteria cri = new Criteria();
+		cri.setCurrPage(2);
+		cri.setAmount(5);
+		cri.setPagesPerPage(3);
+		int result = this.boardService.PageCount(cri);
+		log.info("\t + result : {}", result);
+	}//PageCount
 
 }//end class

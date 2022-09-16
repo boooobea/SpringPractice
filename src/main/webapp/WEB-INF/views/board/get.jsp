@@ -126,6 +126,9 @@
 
             <form id="boardForm" action="/board/modify" method="get">
                 <input type="hidden" id="bno" name="bno" value="${BOARD.bno}">
+                <input type="hidden" name="currPage" value="${cri.currPage}">
+                <input type="hidden" name="amount" value="${cri.amount}">
+
             </form>
 
             <!-- <div class="content_botton">

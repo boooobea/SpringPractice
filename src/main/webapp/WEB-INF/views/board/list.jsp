@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
+
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +60,28 @@
             font-weight: bold;
             font-size: 18px;
         }
+        .pagination{
+            list-style: none;
+            display: inline-block;
+            margin: 50px 0 0 50px;
+        }
+        .pagination li{
+            float: left;
+            margin-left: 20px;
+            font-weight: bold;
+            padding: 7px;
+        }
+        .pagination li a{
+            color: black;
+            text-decoration: none;
+        }
+        .pagination li a:hover{
+            color: red;
+            text-decoration: underline;
+        }
+        .page{
+            background-color: rgb(239, 204, 139);
+        }
 
     </style>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
@@ -83,6 +106,13 @@
                 moveForm.attr("action","/board/get");
                 moveForm.submit();
             })//게시글 조회
+
+            $('.pagination a').on('click', function(e){
+                e.preventDefault();
+                moveForm.find("input[name=currPage]").val( $(this).attr("href"));
+                moveForm.attr("action","/board/list");
+                moveForm.submit();
+            })//페이지 이동
 
             let formObj = $('#paginationForm');
 
@@ -155,9 +185,28 @@
                 </c:forEach>
             </tbody>
         </table>
-        <form id="moveForm" method="get">
 
+        <div class="pagination_wrap">
+            <ul class="pagination">
+                <c:if test="${PAGINATION.prev}">
+                    <li class="page_prev"><a href="${PAGINATION.startPage-1}">Prev</a></li>
+                </c:if>
+
+                <c:forEach var="page" begin="${PAGINATION.startPage}" end="${PAGINATION.endPage}">
+                    <li class="page_info ${PAGINATION.cri.currPage==page ? 'page' :''}"><a href="${page}">${page}</a></li>
+                </c:forEach>
+                
+                <c:if test="${PAGINATION.next}">
+                    <li class="page_next"><a href="${PAGINATION.endPage+1}">Next</a></li>
+                </c:if>
+            </ul>
+        </div>
+
+        <form id="moveForm" method="get">
+            <input type="hidden" name="currPage" value="${PAGINATION.cri.currPage}">
+            <input type="hidden" name="amount" value="${PAGINATION.cri.amount}">
         </form>
+
         <div class="search_wrap">
             <div class="search_area">
                 <select name="type">

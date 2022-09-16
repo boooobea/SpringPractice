@@ -13,6 +13,7 @@ import org.zerock.myapp.common.CommonKey;
 import org.zerock.myapp.domain.BoardDTO;
 import org.zerock.myapp.domain.BoardVO;
 import org.zerock.myapp.domain.Criteria;
+import org.zerock.myapp.domain.PageDTO;
 import org.zerock.myapp.exception.ControllerException;
 import org.zerock.myapp.exception.ServiceException;
 import org.zerock.myapp.service.BoardService;
@@ -56,32 +57,50 @@ public class BoardController {
 	}//registerPOST
 	
 	//-------------------------------------------------게시글 목록
-	@GetMapping("/list") 		
-	public void boardList(Model model) throws ControllerException {
+//	@GetMapping("/list") 		
+//	public void boardList(Model model) throws ControllerException {
+//		log.trace("BoardList invoked.");
+//		
+//		try {
+//			List<BoardVO> list = this.boardService.getAllBoard();
+//			model.addAttribute(CommonKey.BOARD_LIST,list);
+//		}catch(Exception e) {throw new ControllerException(e);}
+//	}//boardList
+	
+	@GetMapping("/list")  //페이징적용
+	public void boardList(Model model, Criteria cri) throws ControllerException {
 		log.trace("BoardList invoked.");
 		
 		try {
-			List<BoardVO> list = this.boardService.getAllBoard();
+			List<BoardVO> list = this.boardService.PageList(cri);
 			model.addAttribute(CommonKey.BOARD_LIST,list);
+			
+			PageDTO page = new PageDTO(cri, this.boardService.PageCount(cri));
+			model.addAttribute(CommonKey.PAGINATION,page);
+			
 		}catch(Exception e) {throw new ControllerException(e);}
 	}//boardList
 
 	//-------------------------------------------------게시글 조회 / 수정 / 삭제 
 	@GetMapping({"/get","/modify"})
-	public void getboard(Integer bno, Model model) throws ControllerException {
+	public void getboard(Integer bno, Model model, Criteria cri) throws ControllerException {
 		log.trace("getBoard invoked.");
 		
-		try { model.addAttribute("BOARD",this.boardService.getBoard(bno));}
-		catch(Exception e) {throw new ControllerException(e); }
+		try { 
+			model.addAttribute("BOARD",this.boardService.getBoard(bno));
+			model.addAttribute("cri",cri);
+			
+		}catch(Exception e) {throw new ControllerException(e); }
 	}//getboard
 	
 	@PostMapping("/modify")
-	public String modifyPOST(BoardDTO dto, RedirectAttributes rttrs) throws ControllerException{
+	public String modifyPOST(BoardDTO dto, RedirectAttributes rttrs, Criteria cri) throws ControllerException{
 		log.trace("modify Post invoked.");
 		try {
 			int result = this.boardService.modifyBoard(dto);
 			log.info("\t + result : {}", result);
 			rttrs.addFlashAttribute(CommonKey.BOARD_RESULT,"게시글이 수정되었습니다.");
+			rttrs.addFlashAttribute("cri",cri);
 			
 			return "redirect:/board/list";
 		} catch(Exception e) {throw new ControllerException(e); }

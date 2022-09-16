@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.myapp.domain.BoardDTO;
 import org.zerock.myapp.domain.BoardVO;
+import org.zerock.myapp.domain.Criteria;
 import org.zerock.myapp.exception.ServiceException;
 import org.zerock.myapp.mapper.BoardMapper;
 
@@ -65,6 +66,21 @@ public class BoardServiceImpl implements BoardService {
 			log.info("\t + result : {}", result);
 			return result;
 		} catch ( Exception e) {throw new ServiceException(e); }
+	}//removeBoard
+
+	@Override
+	public List<BoardVO> PageList(Criteria cri) throws ServiceException {
+		try {
+			List<BoardVO> list = this.boardMapper.listPage(cri);
+			return list;
+		} catch(Exception e) {throw new ServiceException(e); }
+	}//PageList
+
+	@Override
+	public int PageCount(Criteria cri) throws ServiceException {
+		try {
+			return this.boardMapper.boardCount(cri);			
+		} catch(Exception e) {throw new ServiceException(e);}
 	}//removeBoard
 
 

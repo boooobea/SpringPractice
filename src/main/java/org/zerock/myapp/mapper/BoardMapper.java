@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.zerock.myapp.domain.BoardDTO;
 import org.zerock.myapp.domain.BoardVO;
+import org.zerock.myapp.domain.Criteria;
 import org.zerock.myapp.exception.DAOException;
 
 public interface BoardMapper {
@@ -30,13 +31,11 @@ public interface BoardMapper {
 	@Delete("DELETE FROM test_board WHERE bno=#{bno}")
 	public abstract int deleteBoard(@Param("bno")Integer bno) throws DAOException;
 	
-	
-	
 	//------------- paging
 	
-//	public abstract List<BoardVO> listPage(Criteria cri) throws DAOException;
-//
-//	public abstract int boardCount(Criteria cri) throws DAOException;
+	public abstract List<BoardVO> listPage(Criteria cri) throws DAOException;
+
+	public abstract int boardCount(Criteria cri) throws DAOException;
 	
 //	public abstract List<BoardVO> selectWithPaging(Criteria cri) throws DAOException;
 	

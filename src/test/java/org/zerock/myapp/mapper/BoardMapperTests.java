@@ -38,7 +38,7 @@ public class BoardMapperTests {
 	
 	@Test
 	@Order(1)
-	@DisplayName("InsertBoard")
+	@DisplayName("InsertBoard 게시글등록")
 	@Timeout(value = 5, unit = TimeUnit.SECONDS)
 	void testIntertBoard() throws DAOException {
 		
@@ -52,7 +52,7 @@ public class BoardMapperTests {
 	
 	@Test
 	@Order(2)
-	@DisplayName("selectBoard")
+	@DisplayName("selectBoard 게시글조회")
 	void testselectBoard() throws DAOException {
 		BoardVO vo = this.boardMapper.selectBoard(4);
 		log.info("\t + vo : {}", vo);
@@ -60,7 +60,7 @@ public class BoardMapperTests {
 
 	@Test
 	@Order(3)
-	@DisplayName("selectAllBoard")
+	@DisplayName("selectAllBoard 게시글목록")
 	void testselectAllBoard() throws DAOException{
 		List<BoardVO> list = this.boardMapper.selectAllBoard();
 		list.forEach(log::info);
@@ -68,6 +68,7 @@ public class BoardMapperTests {
 
 	@Test
 	@Order(4)
+	@DisplayName("updateBoard 게시글수정")
 	@Timeout(value = 5, unit = TimeUnit.SECONDS)
 	void testupdateBoard() throws DAOException{
 		BoardDTO dto = new BoardDTO();
@@ -81,12 +82,33 @@ public class BoardMapperTests {
 	
 	@Test
 	@Order(5)
+	@DisplayName("deleteBoard 게시글삭제")
 	void testdeleteBoard() throws DAOException{
-		
 		int result = this.boardMapper.deleteBoard(2);
 		log.info("\t + result : {}", result);
 	}//deleteBoard
 	
+	@Test
+	@DisplayName("listPage 페이징 게시글목록")
+	void testlistPage() throws DAOException {
+		Criteria cri = new Criteria();
+		cri.setCurrPage(2);
+		cri.setAmount(5);
+		cri.setPagesPerPage(5);
+		List<BoardVO> list = this.boardMapper.listPage(cri);
+		list.forEach(log::info);
+	}//listPage
+	
+	@Test
+	@DisplayName("PageCount 페이징 총 목록")
+	void testPageCount() throws DAOException {
+		Criteria cri = new Criteria();
+		cri.setAmount(5);
+		cri.setCurrPage(2);
+		cri.setPagesPerPage(10);
+		int result = this.boardMapper.boardCount(cri);
+		log.info("\t + result : {}", result);
+	}//PageCount
 
 	
 	

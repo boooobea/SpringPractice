@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.zerock.myapp.domain.BoardDTO;
 import org.zerock.myapp.domain.BoardVO;
+import org.zerock.myapp.domain.Criteria;
 import org.zerock.myapp.exception.ServiceException;
 
 public interface BoardService {
@@ -22,8 +23,8 @@ public interface BoardService {
 	public abstract int removeBoard(Integer bno) throws ServiceException;
 
 	//-------- paging 
-//	
-//	public abstract List<BoardVO> PageList(Criteria cri) throws ServiceException;
-//	
-//	public abstract int PageCount(Criteria cri) throws ServiceException;
+	
+	public abstract List<BoardVO> PageList(Criteria cri) throws ServiceException;
+	
+	public abstract int PageCount(Criteria cri) throws ServiceException;
 }//end 
