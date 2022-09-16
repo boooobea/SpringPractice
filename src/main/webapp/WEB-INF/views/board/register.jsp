@@ -57,7 +57,12 @@
        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js" integrity="sha512-QDsjSX1mStBIAnNXx31dyvw4wVdHjonOwrkaIhpiIlzqGUCdsI62MwQtHpJF+Npy2SmSlGSROoNWQCOFpqbsOg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
        <script>
+           $(function(){
+                $('#list_btn').on('click',function(){
+                    document.location="/board/list"
+                });//list_btn
 
+           });//jq
        </script>
 </head>
 <body>
@@ -84,6 +89,7 @@
             </div>
 
             <div class="input_wrap">
+                <button class="btn" id="list_btn" type="button">목록페이지</button>
                 <button class="btn">등록</button>
             </div>
         </form>
