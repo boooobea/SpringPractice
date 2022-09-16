@@ -83,7 +83,7 @@ public class BoardMapperTests {
 	@Order(5)
 	void testdeleteBoard() throws DAOException{
 		
-		int result = this.boardMapper.deleteBoard(66);
+		int result = this.boardMapper.deleteBoard(2);
 		log.info("\t + result : {}", result);
 	}//deleteBoard
 	

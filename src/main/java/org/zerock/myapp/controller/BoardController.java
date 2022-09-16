@@ -32,6 +32,7 @@ public class BoardController {
 	
 	//-----------------------------------------------------------
 	
+	//-------------------------------------------------게시글 등록
 	@GetMapping("/register")
 	public void registerGET() {
 		log.trace("regisfer get invoked.");
@@ -54,6 +55,7 @@ public class BoardController {
 		}catch(Exception e) {throw new ControllerException(e);}
 	}//registerPOST
 	
+	//-------------------------------------------------게시글 목록
 	@GetMapping("/list") 		
 	public void boardList(Model model) throws ControllerException {
 		log.trace("BoardList invoked.");
@@ -64,6 +66,7 @@ public class BoardController {
 		}catch(Exception e) {throw new ControllerException(e);}
 	}//boardList
 
+	//-------------------------------------------------게시글 조회 / 수정 / 삭제 
 	@GetMapping({"/get","/modify"})
 	public void getboard(Integer bno, Model model) throws ControllerException {
 		log.trace("getBoard invoked.");
@@ -85,20 +88,17 @@ public class BoardController {
 	}//modifyPOST
 	
 	@PostMapping("/remove")
-	public String removePost(Criteria cri, Integer bno, RedirectAttributes rttrs) throws ControllerException {
+	public String removePost(Integer bno, RedirectAttributes rttrs) throws ControllerException {
 		log.trace("remove invoked.");
 		
-		try {
-			
-			if(this.boardService.removeBoard(bno)==1){
-				rttrs.addFlashAttribute(CommonKey.BOARD_RESULT,"삭제가 완료되었습니다.");
-			} else {
-				rttrs.addFlashAttribute(CommonKey.BOARD_RESULT,"삭제 되지 않았습니다.");
-			}//if-else
+		try { 
+			this.boardService.removeBoard(bno);
+			rttrs.addFlashAttribute(CommonKey.BOARD_RESULT,"삭제가 완료되었습니다.");
 			return "redirect:/board/list";
 		}catch(Exception e) {throw new ControllerException(e); }
 	}//remove
 	
+	//-------------------------------------------------게시글 등록
 	//댓글쓰기
 	@GetMapping("/repliesEnroll2")
 	public String repliesEnrollWindowGET(int bno, Model model) throws ServiceException {

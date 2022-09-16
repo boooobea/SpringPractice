@@ -13,7 +13,7 @@
                 padding: 0px;
             }
             #wrapper{
-                width: 800px;
+                width: 1000px;
                 margin: 20px 100px;
                 padding-left: 20px;
             }
@@ -85,6 +85,12 @@
                     form.attr("action","/board/get");
                     form.submit();
                 });//취소하기
+
+                $('#remove_btn').on('click',function(){
+                    form.attr("action","/board/remove");
+                    form.attr("method","post");
+                    form.submit();
+                });//삭제하기
             });
         </script>
     </head>
@@ -131,6 +137,7 @@
             <div class="btn_wrap">
                 <a class="btn" id="list_btn">목록페이지</a>
                 <a class="btn" id="modify_btn">수정 하기</a>
+                <a class="btn" id="remove_btn">삭제 하기</a>
                 <a class="btn" id="cancle_btn">취 소</a>
             </div>
                 

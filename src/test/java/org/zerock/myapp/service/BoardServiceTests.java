@@ -87,7 +87,7 @@ public class BoardServiceTests {
 	@Timeout(value = 5, unit = TimeUnit.SECONDS)
 	void testremoveBoard() throws ServiceException{
 		
-		int result = this.boardService.removeBoard(86);
+		int result = this.boardService.removeBoard(2);
 		log.info("\t + result : {}", result);
 	}//removeBoard
 

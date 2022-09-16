@@ -27,7 +27,7 @@ public interface BoardMapper {
 	public abstract int updateBoard(BoardDTO dto) throws DAOException;
 	
 	//게시글 삭제
-	@Delete("DELETE FROM tbl_board WHERE bno=#{bno}")
+	@Delete("DELETE FROM test_board WHERE bno=#{bno}")
 	public abstract int deleteBoard(@Param("bno")Integer bno) throws DAOException;
 	
 	
