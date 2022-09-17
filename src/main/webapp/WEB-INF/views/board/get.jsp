@@ -128,6 +128,8 @@
                 <input type="hidden" id="bno" name="bno" value="${BOARD.bno}">
                 <input type="hidden" name="currPage" value="${cri.currPage}">
                 <input type="hidden" name="amount" value="${cri.amount}">
+                <input type="hidden" name="type" value="${cri.type}">
+                <input type="hidden" name="keyword" value="${cri.keyword}">
 
             </form>
 

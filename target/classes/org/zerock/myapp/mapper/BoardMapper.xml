@@ -19,29 +19,11 @@
         WHERE bno = #{bno}
     </update>
 
-   <!-- 게시글목록 : 페이징 -->
-   <select id="listPage" resultType="org.zerock.myapp.domain.BoardVO">
-    SELECT /*+index_desc(TEST_BOARD)*/ * 
-    FROM TEST_BOARD
-    <!-- <if test="keyword != null">
-        <include refid="criteria"></include>
-    </if> -->
-    OFFSET (#{currPage}-1) * #{amount} ROW 
-    FETCH NEXT #{amount} ROWS ONLY
-    </select>
-
-    <select id="boardCount" resultType="int">
-        SELECT count(*) FROM TEST_BOARD
-        <if test="keyword != null">
-            <include refid="criteria"></include>
-        </if>
-    </select>
-
-  <!-- 검색 -->
-  <sql id="criteria">
-      <trim prefix="WHERE (" suffix=")" prefixOverrides="OR">
-        <foreach collection="typeArr" item="type">
-            <trim prefix="OR">
+    <!-- 검색 -->
+    <sql id="criteria">
+        <trim prefix="WHERE (" suffix=")" prefixOverrides="OR">
+            <foreach collection="typeArr" item="type">
+                <trim prefix="OR">
                 <choose>
                     <when test="type=='T'.toString()">
                         title like '%'||#{keyword}||'%'
@@ -53,10 +35,31 @@
                         writer like '%'||#{keyword}||'%'
                     </when>
                 </choose>
-            </trim>
-        </foreach>
-      </trim>
-  </sql>
+                </trim>
+            </foreach>
+        </trim>
+    </sql>
+
+   <!-- 게시글목록 : 페이징 -->
+   <select id="listPage" resultType="org.zerock.myapp.domain.BoardVO">
+    SELECT /*+index_desc(TEST_BOARD)*/ * 
+    FROM TEST_BOARD
+    <if test="keyword != null">
+        <include refid="criteria"></include>
+    </if>
+    OFFSET (#{currPage}-1) * #{amount} ROW 
+    FETCH NEXT #{amount} ROWS ONLY
+    </select>
+
+    <!-- 총 개수 -->
+    <select id="boardCount" resultType="int">
+        SELECT count(*) FROM TEST_BOARD
+        <if test="keyword != null">
+            <include refid="criteria"></include>
+        </if>
+    </select>
+
+
 
  
 </mapper>

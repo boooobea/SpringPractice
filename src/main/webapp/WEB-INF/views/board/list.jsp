@@ -60,14 +60,17 @@
             font-weight: bold;
             font-size: 18px;
         }
+        .pagination_wrap{
+            width: 100%;
+            margin: 0 auto;
+        }
         .pagination{
-            list-style: none;
-            display: inline-block;
-            margin: 50px 0 0 50px;
+            float: right;
         }
         .pagination li{
+            list-style: none;
+            margin: 20px;
             float: left;
-            margin-left: 20px;
             font-weight: bold;
             padding: 7px;
         }
@@ -81,6 +84,31 @@
         }
         .page{
             background-color: rgb(239, 204, 139);
+        }
+        /* search */
+        .search_area{
+            display: flex;
+            margin-top: 20px;
+        }
+        .search_area select{
+            margin : 0 10px 0 200px;
+        }
+        .search_area input{
+            width: 450px;
+            height: 30px;
+            margin: 0px;
+        }
+        .search_area button{
+            margin: 0 0 0 10px;
+            width: 60px;
+            font-size: 17px;
+            background-color: white;
+            border: 1px solid rgb(79, 79, 79);
+        }
+        .search_area button:hover{
+            cursor: pointer;
+            font-weight: bold;
+            background-color: blanchedalmond;
         }
 
     </style>
@@ -114,20 +142,9 @@
                 moveForm.submit();
             })//페이지 이동
 
-            let formObj = $('#paginationForm');
-
-            $('a.prev, a.next').click(function(e){
-                e.preventDefault();
-                
-                formObj.attr('action','/board/list');
-                formObj.attr('method','get');
-                formObj.find('input[name=currPage]').val( ($(this).attr('href')) );
-                console.log("input[name=currPage]"+$(this).attr('href'));   //해당 값
-                formObj.submit();
-            })//onClick 
-
             $('.search_area button').on('click', function(e){
                 e.preventDefault();
+
                 let type = $('.search_area select').val();
                 let keyword = $('.search_area input[name="keyword"]').val();
 
@@ -135,16 +152,16 @@
                     alert("검색 종류를 선택하세요.");
                     return false;
                 }
-
                 if(!keyword){
                     alert("키워드를 입력하세요.");
                     return false;
                 }
-                formObj.find('input[name="type"]').val(type);
-                formObj.find('input[name="keyword"]').val(keyword);
-                formObj.find('input[name="currPage"]').val(1);
-                formObj.submit();
-            });
+
+                moveForm.find('input[name="type"]').val(type);
+                moveForm.find('input[name="keyword"]').val(keyword);
+                moveForm.find('input[name="currPage"]').val(1);
+                moveForm.submit();
+            })//검색 버튼
        });//jq
    </script>
 
@@ -186,6 +203,19 @@
             </tbody>
         </table>
 
+        <div class="search_wrap">
+            <div class="search_area">
+                <select name="type">
+                    <option value="" value="${PAGINATION.cri.type==null?'selected':''}"> - -</option>
+                    <option value="T" value="${PAGINATION.cri.type eq 'T'?'selected':''}"> 제목</option>
+                    <option value="C" value="${PAGINATION.cri.type eq 'C'?'selected':''}"> 내용</option>
+                    <option value="W" value="${PAGINATION.cri.type eq 'W'?'selected':''}"> 작성자</option>
+                </select>
+                <input type="text" name="keyword" value="${PAGINATION.cri.keyword}">
+                <button>검&nbsp;&nbsp;색</button>
+            </div>
+        </div>
+
         <div class="pagination_wrap">
             <ul class="pagination">
                 <c:if test="${PAGINATION.prev}">
@@ -205,27 +235,13 @@
         <form id="moveForm" method="get">
             <input type="hidden" name="currPage" value="${PAGINATION.cri.currPage}">
             <input type="hidden" name="amount" value="${PAGINATION.cri.amount}">
+            <input type="hidden" name="type" value="${PAGINATION.cri.type}">
+            <input type="hidden" name="keyword" value="${PAGINATION.cri.keyword}">
         </form>
 
-        <div class="search_wrap">
-            <div class="search_area">
-                <select name="type">
-                    <option value="" value="${PAGINATION.cri.type==null?'selected':''}"> - -</option>
-                    <option value="T" value="${PAGINATION.cri.type eq 'T'?'selected':''}"> 제목</option>
-                    <option value="C" value="${PAGINATION.cri.type eq 'C'?'selected':''}"> 내용</option>
-                    <option value="W" value="${PAGINATION.cri.type eq 'W'?'selected':''}"> 작성자</option>
-                    <option value="W" value="${PAGINATION.cri.type eq 'TC'?'selected':''}"> 제목 + 내용 </option>
-                    <option value="W" value="${PAGINATION.cri.type eq 'TW'?'selected':''}"> 제목 + 작성자 </option>
-                    <option value="W" value="${PAGINATION.cri.type eq 'TCW'?'selected':''}"> 제목 + 내용 + 작성자</option>
 
-                </select>
-                <input type="text" name="keyword" value="${PAGINATION.cri.keyword}">
-                <button>Search</button>
-            </div>
-        </div>
 
         <p>&nbsp;</p>
-
     </div>
 </body>
 </html>
