@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.myapp.mapper.MemberMapper">
+
+    <!-- 회원가입 -->
+    <insert id="insertMember" parameterType="org.zerock.myapp.domain.MemberDTO">
+        INSERT INTO book_member(member_id, member_pw, member_name, member_email, member_memo, adminck, money, point)
+        VALUES(#{memberId}, #{memberPw}, #{memberName}, #{memberEmail}, #{memberMemo}, 0, 0, 0)
+    </insert>
+
+    <!-- 아이디중복체크 -->
+    <select id="idCheck" resultType="int">
+        SELECT COUNT(*) FROM book_member WHERE member_id = #{memberId}
+    </select>
+    
+</mapper>
